@@ -277,10 +277,15 @@ bool OpenZWaveBackend::nodeIsSecureDevice(const QUuid &networkUuid, quint8 nodeI
     if (!m_homeIds.contains(networkUuid)) {
         return false;
     }
-    qCDebug(dcOpenZWave()) << "******** node" << nodeId << "is security device:" << m_manager->IsNodeSecurityDevice(m_homeIds.value(networkUuid), nodeId);
-    qCDebug(dcOpenZWave()) << "******** node" << nodeId << "security mode:" << m_manager->GetNodeSecurity(m_homeIds.value(networkUuid), nodeId);
 
-    return m_manager->IsNodeSecurityDevice(m_homeIds.value(networkUuid), nodeId);
+    bool secured;
+    OpenZWave::ValueID valueId(m_homeIds.value(networkUuid), nodeId, OpenZWave::ValueID::ValueGenre_System, 0x98, 0, 0, OpenZWave::ValueID::ValueType_Bool);
+    try {
+        m_manager->GetValueAsBool(valueId, &secured);
+    } catch (OpenZWave::OZWException e) {
+        secured = false;
+    }
+    return secured;
 }
 
 bool OpenZWaveBackend::nodeIsBeamingDevice(const QUuid &networkUuid, quint8 nodeId)
@@ -382,8 +387,8 @@ bool OpenZWaveBackend::setValue(const QUuid &networkUuid, quint8 nodeId, const Z
             qCritical(dcOpenZWave) << "SetValue type not handled:" << value.type();
             return false;
         }
-    } catch (OpenZWave::OZWException *e) {
-        qCWarning(dcOpenZWave()) << "Error setting value:" << e->what();
+    } catch (OpenZWave::OZWException e) {
+        qCWarning(dcOpenZWave()) << "Error setting value:" << e.what();
         return false;
     }
 }
