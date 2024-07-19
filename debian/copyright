@@ -1,7 +1,7 @@
 Format: http://www.debian.org/doc/packaging-manuals/copyright-format/1.0/
 Upstream-Name: nymea-zwave-plugin-openzwave
 Upstream-Contact: nymea GmbH <contact@nymea.io>
-Copyright: 2013-2022, nymea GmbH
+Copyright: 2013-2024, nymea GmbH
 Download: http://www.github.com/nymea/nymea-zwave-plugin-openzwave
 Source: https://github.com/nymea/nymea-zwave-plugin-openzwave.git
 
@@ -13,4 +13,4 @@ License: LGPL-3
 
 Files: *
 License: LGPL-3
-Copyright: 2013 - 2022, nymea GmbH <contact@nymea.io>
+Copyright: 2013 - 2024, nymea GmbH <contact@nymea.io>
