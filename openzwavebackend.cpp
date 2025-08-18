@@ -1,3 +1,33 @@
+/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+*
+* Copyright 2013 - 2025, nymea GmbH
+* Contact: contact@nymea.io
+*
+* This file is part of nymea.
+* This project including source code and documentation is protected by
+* copyright law, and remains the property of nymea GmbH. All rights, including
+* reproduction, publication, editing and translation, are reserved. The use of
+* this project is subject to the terms of a license agreement to be concluded
+* with nymea GmbH in accordance with the terms of use of nymea GmbH, available
+* under https://nymea.io/license
+*
+* GNU Lesser General Public License Usage
+* Alternatively, this project may be redistributed and/or modified under the
+* terms of the GNU Lesser General Public License as published by the Free
+* Software Foundation; version 3. This project is distributed in the hope that
+* it will be useful, but WITHOUT ANY WARRANTY; without even the implied
+* warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+* Lesser General Public License for more details.
+*
+* You should have received a copy of the GNU Lesser General Public License
+* along with this project. If not, see <https://www.gnu.org/licenses/>.
+*
+* For any further details and any questions please contact us under
+* contact@nymea.io or see our FAQ/Licensing Information on
+* https://nymea.io/license/faq
+*
+* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+
 #include "openzwavebackend.h"
 
 #include <Options.h>
@@ -7,9 +37,9 @@
 #include <Utils.h>
 
 #include <QDir>
-#include "nymeasettings.h"
 
-#include "loggingcategories.h"
+#include <nymeasettings.h>
+#include <loggingcategories.h>
 NYMEA_LOGGING_CATEGORY(dcOpenZWave, "OpenZWaveBackend")
 
 OpenZWaveBackend::OpenZWaveBackend(QObject *parent)
@@ -18,8 +48,6 @@ OpenZWaveBackend::OpenZWaveBackend(QObject *parent)
     qRegisterMetaType<OpenZWaveBackend::NotificationCode>();
     qRegisterMetaType<OpenZWaveBackend::ControllerCommand>();
     qRegisterMetaType<OpenZWaveBackend::ControllerState>();
-
-
 }
 
 OpenZWaveBackend::~OpenZWaveBackend()
@@ -119,7 +147,7 @@ ZWaveReply *OpenZWaveBackend::addNode(const QUuid &networkUuid, bool useSecurity
     }
     quint32 homeId = m_homeIds.value(networkUuid);
     if (m_pendingControllerCommands.contains(homeId)) {
-        reply->finished(ZWave::ZWaveErrorInUse);
+        emit reply->finished(ZWave::ZWaveErrorInUse);
         return reply;
     }
 #ifndef OZW_16
@@ -176,7 +204,7 @@ ZWaveReply *OpenZWaveBackend::removeFailedNode(const QUuid &networkUuid, quint8 
     }
     quint32 homeId = m_homeIds.value(networkUuid);
     if (m_pendingControllerCommands.contains(homeId)) {
-        reply->finished(ZWave::ZWaveErrorInUse);
+        emit reply->finished(ZWave::ZWaveErrorInUse);
         return reply;
     }
     qCDebug(dcOpenZWave()) << "Removing failed node" << nodeId << "from network" << m_homeIds.value(networkUuid);
@@ -282,7 +310,7 @@ bool OpenZWaveBackend::nodeIsSecureDevice(const QUuid &networkUuid, quint8 nodeI
     OpenZWave::ValueID valueId(m_homeIds.value(networkUuid), nodeId, OpenZWave::ValueID::ValueGenre_System, 0x98, 0, 0, OpenZWave::ValueID::ValueType_Bool);
     try {
         m_manager->GetValueAsBool(valueId, &secured);
-    } catch (OpenZWave::OZWException e) {
+    } catch (const OpenZWave::OZWException &e) {
         secured = false;
     }
     return secured;
@@ -387,7 +415,7 @@ bool OpenZWaveBackend::setValue(const QUuid &networkUuid, quint8 nodeId, const Z
             qCritical(dcOpenZWave) << "SetValue type not handled:" << value.type();
             return false;
         }
-    } catch (OpenZWave::OZWException e) {
+    } catch (const OpenZWave::OZWException &e) {
         qCWarning(dcOpenZWave()) << "Error setting value:" << e.what();
         return false;
     }
