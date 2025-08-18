@@ -1,0 +1,23 @@
+Source: nymea-zwave-plugin-openzwave
+Section: utils
+Priority: optional
+Maintainer: nymea GmbH <developer@nymea.io>
+Standards-Version: 4.7.2
+Homepage: https://nymea.io
+Build-Depends: debhelper,
+               dpkg-dev,
+               qt6-base-dev,
+               qt6-base-dev-tools,
+               libnymea-dev,
+               libopenzwave1.6-dev,
+
+
+Package: nymea-zwave-plugin-openzwave
+Architecture: any
+Multi-Arch: same
+Depends: ${shlibs:Depends},
+         ${misc:Depends}
+Provides: nymea-zwave-plugin-impl
+Description: Z-Wave backend plugin for nymea using OpenZWave
+
+
