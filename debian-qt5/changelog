@@ -1,3 +1,10 @@
+nymea-zwave-plugin-openzwave (1.14.0) jammy; urgency=medium
+
+  [ Simon Stürz ]
+  * Update license text and add SPDX identifier
+
+ -- jenkins <developer@nymea.io>  Wed, 19 Nov 2025 09:59:09 +0100
+
 nymea-zwave-plugin-openzwave (1.12.3) jammy; urgency=medium
 
 
