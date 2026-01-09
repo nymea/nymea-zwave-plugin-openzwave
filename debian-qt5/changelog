@@ -1,3 +1,8 @@
+nymea-zwave-plugin-openzwave (1.15.0) noble; urgency=medium
+
+
+ -- jenkins <developer@nymea.io>  Fri, 09 Jan 2026 15:36:04 +0100
+
 nymea-zwave-plugin-openzwave (1.13.0) jammy; urgency=medium
 
   [ Simon Stürz ]
